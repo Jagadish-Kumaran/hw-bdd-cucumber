@@ -1,0 +1,88 @@
+Using the default profile...
+Feature: display list of movies filtered by MPAA rating
+  As a concerned parent
+  So that I can quickly browse movies appropriate for my family
+  I want to see movies matching only certain MPAA ratings
+
+  Background: movies have been added to database # features/filter_movie_list.feature:7
+    Given the following movies exist:            # features/step_definitions/movie_steps.rb:3
+      | title                   | rating | release_date |
+      | Aladdin                 | G      | 25-Nov-1992  |
+      | The Terminator          | R      | 26-Oct-1984  |
+      | When Harry Met Sally    | R      | 21-Jul-1989  |
+      | The Help                | PG-13  | 10-Aug-2011  |
+      | Chocolat                | PG-13  | 5-Jan-2001   |
+      | Amelie                  | R      | 25-Apr-2001  |
+      | 2001: A Space Odyssey   | G      | 6-Apr-1968   |
+      | The Incredibles         | PG     | 5-Nov-2004   |
+      | Raiders of the Lost Ark | PG     | 12-Jun-1981  |
+      | Chicken Run             | G      | 21-Jun-2000  |
+    And I am on the RottenPotatoes home page     # features/step_definitions/web_steps.rb:44
+    Then 10 seed movies should exist             # features/step_definitions/movie_steps.rb:12
+
+  Scenario: restrict to movies with 'PG' or 'R' ratings # features/filter_movie_list.feature:25
+      # enter step(s) to check the 'PG' and 'R' checkboxes
+    When I check the following ratings: PG, R           # features/step_definitions/movie_steps.rb:30
+      # enter step(s) to uncheck all other checkboxes
+    When I uncheck the following ratings: PG-13, G      # features/step_definitions/movie_steps.rb:30
+      # enter step to "submit" the search form on the homepage
+    When I press "Refresh"                              # features/step_definitions/web_steps.rb:52
+      # enter step(s) to ensure that PG and R movies are visible
+    Then I should be on the RottenPotatoes home page    # features/step_definitions/web_steps.rb:230
+    Then I should see "The Terminator"                  # features/step_definitions/web_steps.rb:105
+    Then I should see "When Harry Met Sally"            # features/step_definitions/web_steps.rb:105
+    Then I should see "Amelie"                          # features/step_definitions/web_steps.rb:105
+    Then I should see "The Incredibles"                 # features/step_definitions/web_steps.rb:105
+    Then I should see "Raiders of the Lost Ark"         # features/step_definitions/web_steps.rb:105
+      # enter step(s) to ensure that other movies are not visible
+    Then I should not see " Aladdin"                    # features/step_definitions/web_steps.rb:123
+    Then I should not see " The Help"                   # features/step_definitions/web_steps.rb:123
+    Then I should not see "Chocolat"                    # features/step_definitions/web_steps.rb:123
+    Then I should not see "2001: A Space Odyssey"       # features/step_definitions/web_steps.rb:123
+    Then I should not see "Chicken Run"                 # features/step_definitions/web_steps.rb:123
+
+  Scenario: all ratings selected                        # features/filter_movie_list.feature:48
+      # see assignment
+    When I check the following ratings: PG, R, PG-13, G # features/step_definitions/movie_steps.rb:30
+    When I press "Refresh"                              # features/step_definitions/web_steps.rb:52
+    Then I should be on the RottenPotatoes home page    # features/step_definitions/web_steps.rb:230
+    Then I should see all the movies                    # features/step_definitions/movie_steps.rb:42
+
+Feature: display list of movies sorted by different criteria
+  As an avid moviegoer
+  So that I can quickly browse movies based on my preferences
+  I want to see movies sorted by title or release date
+
+  Background: movies have been added to database # features/sort_movie_list.feature:7
+    Given the following movies exist:            # features/step_definitions/movie_steps.rb:3
+      | title                   | rating | release_date |
+      | Aladdin                 | G      | 25-Nov-1992  |
+      | The Terminator          | R      | 26-Oct-1984  |
+      | When Harry Met Sally    | R      | 21-Jul-1989  |
+      | The Help                | PG-13  | 10-Aug-2011  |
+      | Chocolat                | PG-13  | 5-Jan-2001   |
+      | Amelie                  | R      | 25-Apr-2001  |
+      | 2001: A Space Odyssey   | G      | 6-Apr-1968   |
+      | The Incredibles         | PG     | 5-Nov-2004   |
+      | Raiders of the Lost Ark | PG     | 12-Jun-1981  |
+      | Chicken Run             | G      | 21-Jun-2000  |
+    And I am on the RottenPotatoes home page     # features/step_definitions/web_steps.rb:44
+    Then 10 seed movies should exist             # features/step_definitions/movie_steps.rb:12
+
+  Scenario: sort movies alphabetically                         # features/sort_movie_list.feature:25
+    When I follow "Movie Title"                                # features/step_definitions/web_steps.rb:56
+      # your steps here
+    Then I should see "2001: A Space Odyssey" before "Aladdin" # features/step_definitions/movie_steps.rb:19
+    Then I should see "The Help" before "The Terminator"       # features/step_definitions/movie_steps.rb:19
+    Then I should see "Amelie" before "Chocolat"               # features/step_definitions/movie_steps.rb:19
+
+  Scenario: sort movies in increasing order of release date                    # features/sort_movie_list.feature:32
+    When I follow "Release Date"                                               # features/step_definitions/web_steps.rb:56
+      # your steps here
+    Then I should see "2001: A Space Odyssey" before "Raiders of the Lost Ark" # features/step_definitions/movie_steps.rb:19
+    Then I should see "Raiders of the Lost Ark" before "When Harry Met Sally"  # features/step_definitions/movie_steps.rb:19
+    Then I should see "When Harry Met Sally" before "Chicken Run"              # features/step_definitions/movie_steps.rb:19
+
+4 scenarios (4 passed)
+38 steps (38 passed)
+0m0.380s

@@ -1,0 +1,88 @@
+Using the default profile...
+Feature: display list of movies filtered by MPAA rating
+  As a concerned parent
+  So that I can quickly browse movies appropriate for my family
+  I want to see movies matching only certain MPAA ratings
+
+  Background: movies have been added to database[90m # features/filter_movie_list.feature:7[0m
+    [32mGiven the following movies exist:[90m            # features/step_definitions/movie_steps.rb:3[0m[0m
+      | [36mtitle                  [0m[0m |[0m [36mrating[0m[0m |[0m [36mrelease_date[0m[0m |[0m
+      | [36mAladdin                [0m[0m |[0m [36mG     [0m[0m |[0m [36m25-Nov-1992 [0m[0m |[0m
+      | [36mThe Terminator         [0m[0m |[0m [36mR     [0m[0m |[0m [36m26-Oct-1984 [0m[0m |[0m
+      | [36mWhen Harry Met Sally   [0m[0m |[0m [36mR     [0m[0m |[0m [36m21-Jul-1989 [0m[0m |[0m
+      | [36mThe Help               [0m[0m |[0m [36mPG-13 [0m[0m |[0m [36m10-Aug-2011 [0m[0m |[0m
+      | [36mChocolat               [0m[0m |[0m [36mPG-13 [0m[0m |[0m [36m5-Jan-2001  [0m[0m |[0m
+      | [36mAmelie                 [0m[0m |[0m [36mR     [0m[0m |[0m [36m25-Apr-2001 [0m[0m |[0m
+      | [36m2001: A Space Odyssey  [0m[0m |[0m [36mG     [0m[0m |[0m [36m6-Apr-1968  [0m[0m |[0m
+      | [36mThe Incredibles        [0m[0m |[0m [36mPG    [0m[0m |[0m [36m5-Nov-2004  [0m[0m |[0m
+      | [36mRaiders of the Lost Ark[0m[0m |[0m [36mPG    [0m[0m |[0m [36m12-Jun-1981 [0m[0m |[0m
+      | [36mChicken Run            [0m[0m |[0m [36mG     [0m[0m |[0m [36m21-Jun-2000 [0m[0m |[0m
+    [32mAnd I am on [32m[1mthe RottenPotatoes home page[0m[0m[32m[90m     # features/step_definitions/web_steps.rb:44[0m[0m
+    [32mThen [32m[1m10[0m[0m[32m seed movies should exist[90m             # features/step_definitions/movie_steps.rb:12[0m[0m
+
+  Scenario: restrict to movies with 'PG' or 'R' ratings[90m # features/filter_movie_list.feature:25[0m
+      # enter step(s) to check the 'PG' and 'R' checkboxes
+    [32mWhen I check the following ratings: [32m[1mPG, R[0m[0m[32m[90m           # features/step_definitions/movie_steps.rb:30[0m[0m
+      # enter step(s) to uncheck all other checkboxes
+    [32mWhen I [32m[1mun[0m[0m[32mcheck the following ratings: [32m[1mPG-13, G[0m[0m[32m[90m      # features/step_definitions/movie_steps.rb:30[0m[0m
+      # enter step to "submit" the search form on the homepage
+    [32mWhen I press "[32m[1mRefresh[0m[0m[32m"[90m                              # features/step_definitions/web_steps.rb:52[0m[0m
+      # enter step(s) to ensure that PG and R movies are visible
+    [32mThen I should be on [32m[1mthe RottenPotatoes home page[0m[0m[32m[90m    # features/step_definitions/web_steps.rb:230[0m[0m
+    [32mThen I should see "[32m[1mThe Terminator[0m[0m[32m"[90m                  # features/step_definitions/web_steps.rb:105[0m[0m
+    [32mThen I should see "[32m[1mWhen Harry Met Sally[0m[0m[32m"[90m            # features/step_definitions/web_steps.rb:105[0m[0m
+    [32mThen I should see "[32m[1mAmelie[0m[0m[32m"[90m                          # features/step_definitions/web_steps.rb:105[0m[0m
+    [32mThen I should see "[32m[1mThe Incredibles[0m[0m[32m"[90m                 # features/step_definitions/web_steps.rb:105[0m[0m
+    [32mThen I should see "[32m[1mRaiders of the Lost Ark[0m[0m[32m"[90m         # features/step_definitions/web_steps.rb:105[0m[0m
+      # enter step(s) to ensure that other movies are not visible
+    [32mThen I should not see "[32m[1m Aladdin[0m[0m[32m"[90m                    # features/step_definitions/web_steps.rb:123[0m[0m
+    [32mThen I should not see "[32m[1m The Help[0m[0m[32m"[90m                   # features/step_definitions/web_steps.rb:123[0m[0m
+    [32mThen I should not see "[32m[1mChocolat[0m[0m[32m"[90m                    # features/step_definitions/web_steps.rb:123[0m[0m
+    [32mThen I should not see "[32m[1m2001: A Space Odyssey[0m[0m[32m"[90m       # features/step_definitions/web_steps.rb:123[0m[0m
+    [32mThen I should not see "[32m[1mChicken Run[0m[0m[32m"[90m                 # features/step_definitions/web_steps.rb:123[0m[0m
+
+  Scenario: all ratings selected[90m                        # features/filter_movie_list.feature:48[0m
+      # see assignment
+    [32mWhen I check the following ratings: [32m[1mPG, R, PG-13, G[0m[0m[32m[90m # features/step_definitions/movie_steps.rb:30[0m[0m
+    [32mWhen I press "[32m[1mRefresh[0m[0m[32m"[90m                              # features/step_definitions/web_steps.rb:52[0m[0m
+    [32mThen I should be on [32m[1mthe RottenPotatoes home page[0m[0m[32m[90m    # features/step_definitions/web_steps.rb:230[0m[0m
+    [32mThen I should see all the movies[90m                    # features/step_definitions/movie_steps.rb:42[0m[0m
+
+Feature: display list of movies sorted by different criteria
+  As an avid moviegoer
+  So that I can quickly browse movies based on my preferences
+  I want to see movies sorted by title or release date
+
+  Background: movies have been added to database[90m # features/sort_movie_list.feature:7[0m
+    [32mGiven the following movies exist:[90m            # features/step_definitions/movie_steps.rb:3[0m[0m
+      | [36mtitle                  [0m[0m |[0m [36mrating[0m[0m |[0m [36mrelease_date[0m[0m |[0m
+      | [36mAladdin                [0m[0m |[0m [36mG     [0m[0m |[0m [36m25-Nov-1992 [0m[0m |[0m
+      | [36mThe Terminator         [0m[0m |[0m [36mR     [0m[0m |[0m [36m26-Oct-1984 [0m[0m |[0m
+      | [36mWhen Harry Met Sally   [0m[0m |[0m [36mR     [0m[0m |[0m [36m21-Jul-1989 [0m[0m |[0m
+      | [36mThe Help               [0m[0m |[0m [36mPG-13 [0m[0m |[0m [36m10-Aug-2011 [0m[0m |[0m
+      | [36mChocolat               [0m[0m |[0m [36mPG-13 [0m[0m |[0m [36m5-Jan-2001  [0m[0m |[0m
+      | [36mAmelie                 [0m[0m |[0m [36mR     [0m[0m |[0m [36m25-Apr-2001 [0m[0m |[0m
+      | [36m2001: A Space Odyssey  [0m[0m |[0m [36mG     [0m[0m |[0m [36m6-Apr-1968  [0m[0m |[0m
+      | [36mThe Incredibles        [0m[0m |[0m [36mPG    [0m[0m |[0m [36m5-Nov-2004  [0m[0m |[0m
+      | [36mRaiders of the Lost Ark[0m[0m |[0m [36mPG    [0m[0m |[0m [36m12-Jun-1981 [0m[0m |[0m
+      | [36mChicken Run            [0m[0m |[0m [36mG     [0m[0m |[0m [36m21-Jun-2000 [0m[0m |[0m
+    [32mAnd I am on [32m[1mthe RottenPotatoes home page[0m[0m[32m[90m     # features/step_definitions/web_steps.rb:44[0m[0m
+    [32mThen [32m[1m10[0m[0m[32m seed movies should exist[90m             # features/step_definitions/movie_steps.rb:12[0m[0m
+
+  Scenario: sort movies alphabetically[90m                         # features/sort_movie_list.feature:25[0m
+    [32mWhen I follow "[32m[1mMovie Title[0m[0m[32m"[90m                                # features/step_definitions/web_steps.rb:56[0m[0m
+      # your steps here
+    [32mThen I should see "[32m[1m2001: A Space Odyssey[0m[0m[32m" before "[32m[1mAladdin[0m[0m[32m"[90m # features/step_definitions/movie_steps.rb:19[0m[0m
+    [32mThen I should see "[32m[1mThe Help[0m[0m[32m" before "[32m[1mThe Terminator[0m[0m[32m"[90m       # features/step_definitions/movie_steps.rb:19[0m[0m
+    [32mThen I should see "[32m[1mAmelie[0m[0m[32m" before "[32m[1mChocolat[0m[0m[32m"[90m               # features/step_definitions/movie_steps.rb:19[0m[0m
+
+  Scenario: sort movies in increasing order of release date[90m                    # features/sort_movie_list.feature:32[0m
+    [32mWhen I follow "[32m[1mRelease Date[0m[0m[32m"[90m                                               # features/step_definitions/web_steps.rb:56[0m[0m
+      # your steps here
+    [32mThen I should see "[32m[1m2001: A Space Odyssey[0m[0m[32m" before "[32m[1mRaiders of the Lost Ark[0m[0m[32m"[90m # features/step_definitions/movie_steps.rb:19[0m[0m
+    [32mThen I should see "[32m[1mRaiders of the Lost Ark[0m[0m[32m" before "[32m[1mWhen Harry Met Sally[0m[0m[32m"[90m  # features/step_definitions/movie_steps.rb:19[0m[0m
+    [32mThen I should see "[32m[1mWhen Harry Met Sally[0m[0m[32m" before "[32m[1mChicken Run[0m[0m[32m"[90m              # features/step_definitions/movie_steps.rb:19[0m[0m
+
+4 scenarios ([32m4 passed[0m)
+38 steps ([32m38 passed[0m)
+0m0.450s
